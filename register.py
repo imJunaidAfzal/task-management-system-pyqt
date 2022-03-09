@@ -248,6 +248,8 @@ class RegistrationDialog(QDialog):
     def ok_handle(self):
         self.close()
         self.parent.close()
+        login_win = LoginMainWindow()
+        login_win.show()
 
     def close_parent(self, event):
         self.parent.close()

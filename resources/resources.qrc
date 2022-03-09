@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>create_task.png</file>
+    <file>live.png</file>
+    <file>dashboard.png</file>
+    <file>female-user.png</file>
+    <file>male-user.png</file>
+    <file>logo.png</file>
+    <file>menu.png</file>
+  </qresource>
+</RCC>

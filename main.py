@@ -1,36 +1,23 @@
 from register import RegisterMainWindow
 from login import LoginMainWindow
-from PyQt5 import QtCore, QtGui, QtWidgets
-import psycopg2
+
 
 import sys
 from PyQt5.QtWidgets import (
     QApplication,
-    QMainWindow,
-    QPushButton,
     QStyleFactory,
-    QLabel,
-    QProxyStyle,
-    QStyle,
-    QCommonStyle,
 )
 
+from tms_main import TMSMainWindow
 
-
+login_user = 'Guest'
 
 if __name__ == '__main__':
+    login_user = 'Guest'
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create("Fusion"))
-    # create the database information
 
-
-
-    # bot = QtWidgets.QMainWindow()
-    # ui = RegisterationWinSignals(bot)
-    #
-    # ui.setupUi(bot)
-    # bot.show()
-    reg_win = RegisterMainWindow()
+    reg_win = TMSMainWindow()
     reg_win.show()
 
     sys.exit(app.exec_())
