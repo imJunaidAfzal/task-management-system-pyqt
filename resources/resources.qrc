@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>view.png</file>
+    <file>save.png</file>
     <file>create_task.png</file>
     <file>live.png</file>
     <file>dashboard.png</file>

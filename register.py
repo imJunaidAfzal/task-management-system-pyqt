@@ -3,12 +3,11 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtSql import QSqlQuery
-from PyQt5.QtWidgets import QMainWindow, QApplication, QStyleFactory, QDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QStyleFactory, QDialog, QLabel, QWidget
 
 from login import LoginMainWindow
 from register_ui import Ui_RegisterationWin
 import psycopg2
-
 
 # class RegisterationWinSignals(Ui_RegisterationWin):
 #     def __init__(self, win):
@@ -85,7 +84,6 @@ import psycopg2
 #             background-color: rgba(204, 0, 0, 0.2);
 #             """)
 #             self.submit_button.setEnabled(False)
-
 
 class RegisterMainWindow(QMainWindow):
     def __init__(self):
