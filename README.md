@@ -26,6 +26,10 @@ Desktop base Task Management System
 
 ![TMS_close_menu](https://user-images.githubusercontent.com/54235418/157458623-8f5b4655-f828-4405-905d-9a6977a11e37.png)
 
+## Create Task Ui
+
+![create task](https://user-images.githubusercontent.com/54235418/158191102-9a3a8b6b-6c69-4a06-955c-cbafe98a5cf1.png)
+
 
 ### To generate Resources:
 ``` pyrcc5 -o resources.py resources/resources.qrc ```
