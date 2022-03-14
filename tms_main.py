@@ -16,7 +16,10 @@ class TMSMainWindow(QMainWindow):
         self.dashboard_button.clicked.connect(self.handle_dashboard_button)
         self.create_task_button.clicked.connect(self.handle_create_task)
         self.save_task_button.clicked.connect(self.save_button_handle)
+        self.refresh_button.clicked.connect(self.refresh_button_handle)
         self.tb.itemChanged.connect(self.handle_tb_activate)
+        self.tb.clicked.connect(self.handle_table_cleck)
+        self.next_task_id = None
 
         lay = QFormLayout()
         # self.task_view_frame.setLayout(lay)
@@ -35,6 +38,11 @@ class TMSMainWindow(QMainWindow):
 
         except Exception as e:
             print(f"not connect\n{e}")
+
+        self.load_user_data()
+
+    def handle_table_cleck(self, item):
+        print(item.column(), item.row())
 
     def handle_menu(self):
         print(self.left_body_frame.width())
@@ -58,15 +66,21 @@ class TMSMainWindow(QMainWindow):
         self.dashboard_frame.setStyleSheet("")
 
     def handle_create_task(self):
+        dia = CreateTaskDialog(self)
+        dia.show()
+        row_position = self.tb.rowCount()
+        self.tb.insertRow(row_position)
+        self.tb.setItem(row_position, 0, QTableWidgetItem(str(self.next_task_id)))
         task_title = "Task"
         task_description = "task_description"
         created_at = "2000-01-01"
         updated_at = "2000-01-01"
         status = 'False'
-        query = f"INSERT INTO task (task_id, task_title, task_description, created_at, updated_at, status, is_deleted) VALUES(2, '{task_title}', '{task_description}', '{created_at}', '{updated_at}', '{status}', '{False}');"
+        query = f"INSERT INTO task (task_id, task_title, task_description, created_at, updated_at, status, is_deleted) VALUES('{self.next_task_id}','{task_title}', '{task_description}', '{created_at}', '{updated_at}', '{status}', '{False}');"
+        self.next_task_id += 1
         print(query)
-        self.cur.execute(query)
-        self.load_user_data()
+        # self.cur.execute(query)
+        # self.load_user_data()
         print('load data into table')
         # label1 = QtWidgets.QLabel(self.task_view_frame)
         # label1.setAlignment(Qt.AlignLeft)
@@ -74,7 +88,7 @@ class TMSMainWindow(QMainWindow):
         # label1.show()
 
     def load_user_data(self):
-        query = "SELECT * From task;;"
+        query = "SELECT * From task;"
         self.cur.execute(query)
         result = self.cur.fetchall()
         # print(result)
@@ -83,11 +97,14 @@ class TMSMainWindow(QMainWindow):
             self.tb.insertRow(row_position)
             # self.tb.setItem(row_position, 0, QTableWidgetItem(str(record[0])))
 
+            self.tb.setItem(row_position, 0, QTableWidgetItem(str(record[0])))
             self.tb.setItem(row_position, 1, QTableWidgetItem(str(record[1])))
             self.tb.setItem(row_position, 2, QTableWidgetItem(str(record[2])))
             self.tb.setItem(row_position, 3, QTableWidgetItem(str(record[3])))
             self.tb.setItem(row_position, 4, QTableWidgetItem(str(record[4])))
             self.tb.setItem(row_position, 5, QTableWidgetItem(str(record[5])))
+
+            self.next_task_id = record[0] + 1
 
     def save_button_handle(self):
         """
@@ -120,3 +137,34 @@ class TMSMainWindow(QMainWindow):
         except Exception as e:
             print(f'err {e}')
             self.cur.execute("ROLLBACK")
+
+    def refresh_button_handle(self):
+        self.tb.setRowCount(0)
+        self.load_user_data()
+
+
+class CreateTaskDialog(QDialog):
+    def __init__(self, parent):
+        super().__init__()
+
+        self.window = uic.loadUi("create_task.ui", self)
+        # Assigning Signals
+        self.parent = parent
+        self.create_button.clicked.connect(self.create_handle)
+        self.cancel_button.clicked.connect(self.cancel_handle)
+        # self.window.closeEvent = self.close_parent
+
+    def create_handle(self):
+        title = self.title_input.text()
+        description = self.description_input.toPlainText()
+        created_at = self.created_input.text()
+        updated_at = self.updated_input.text()
+
+        print(f'{title}, {description}, {created_at}, {updated_at}')
+
+    def cancel_handle(self):
+        self.close()
+
+    def close_parent(self, event):
+        self.parent.close()
+
